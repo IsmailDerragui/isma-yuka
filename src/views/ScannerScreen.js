@@ -116,14 +116,16 @@ export default class ScannerView extends React.Component {
                     <Text>No access to camera</Text>
                 </View>
             );
-        } else if (this.state.isFocused) {
+        }
+        else if (this.state.isFocused) {
+        // else {
 
             return (
             <View style={{ flex: 1 }}>
                 <Camera
                     type={Camera.Constants.Type.back}
                     flashMode={this.state.isFlashOn ?  Camera.Constants.FlashMode.torch : Camera.Constants.FlashMode.off}
-                    onBarCodeScanned={this.state.scanned ? undefined : this.handleBarCodeScanned}
+                    onBarCodeScanned={this.state.scanned ? undefined : this.handleBarCodeScanned}x
                     style={{
                         flex: 1,
                         flexDirection: 'column',
