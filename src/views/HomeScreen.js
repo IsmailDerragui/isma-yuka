@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, SafeAreaView, FlatList } from 'react-native';
+import { ActivityIndicator, SafeAreaView, FlatList, StyleSheet, StatusBar } from 'react-native';
 
 // Composant custom pour formatter les lignes de la flatlist
 import ListItem from '../components/ListItem'
@@ -10,7 +10,7 @@ export default class HomeScreen extends React.Component {
     constructor(props){
         super(props);
         // Etat initial du composant
-        this.state = { 
+        this.state = {
             products: false
         }
     }
@@ -25,7 +25,7 @@ export default class HomeScreen extends React.Component {
                 this.setState({
                     products: responseJson.products,
                 });
-        
+
             })
             .catch((error) =>{
                 console.error(error);
@@ -44,9 +44,9 @@ export default class HomeScreen extends React.Component {
         else{
             return(
                 <SafeAreaView style={{flex: 1, paddingTop:20}}>
-                    <FlatList
+                    <FlatList style={styles.FlatList}
                         data={this.state.products}
-                        renderItem={({item}) => <ListItem item={item} navigation={this.props.navigation}  />}
+                        renderItem={({item}) => <ListItem style={styles2.ListItem} item={item} navigation={this.props.navigation}  />}
                         keyExtractor={({id}, index) => id}
                     />
                 </SafeAreaView>
@@ -54,5 +54,24 @@ export default class HomeScreen extends React.Component {
         }
 
     }
-    
+
 }
+
+const styles = StyleSheet.create({
+  FlatList: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
+    borderWidth: 5,
+    borderRadius:10,
+
+  },
+});
+
+const styles2 = StyleSheet.create({
+
+  ListItem:{
+
+    borderWidth: 5,
+    borderRadius:10,
+  },
+});

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Vibration, AsyncStorage } from 'react-native';
+import { Text, View, Vibration, AsyncStorage, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Camera } from 'expo-camera';
 import { withNavigationFocus } from 'react-navigation';
+import { Ionicons, FontAwesome } from "@expo/vector-icons"
+import { Entypo } from '@expo/vector-icons';
 
 const { FlashMode: CameraFlashModes, Type: CameraTypes } = Camera.Constants;
 
@@ -13,7 +15,7 @@ export default class ScannerView extends React.Component {
 
     constructor(props){
         super(props);
-        this.state = { 
+        this.state = {
             isFlashOn: false,
             flashState: Camera.Constants.FlashMode.torch,
             hasCameraPermission: null,
@@ -48,8 +50,8 @@ export default class ScannerView extends React.Component {
     }
 
     changeFlash(){
-        this.state.isFlashOn ? 
-            this.setState({isFlashOn: false}) : 
+        this.state.isFlashOn ?
+            this.setState({isFlashOn: false}) :
             this.setState({isFlashOn: true})
     }
 
@@ -66,7 +68,7 @@ export default class ScannerView extends React.Component {
 
                 aHistoryArray.push(product);
                 sHistoryArray = JSON.stringify(aHistoryArray);
-                
+
                 // Stoquage du produit récupéré dans asyncStorage
                 try {
                     await AsyncStorage.setItem(
@@ -86,7 +88,7 @@ export default class ScannerView extends React.Component {
 
         this.setState({scanned: true})
         Vibration.vibrate();
-        
+
 
         let product = await fetch(`https://world.openfoodfacts.org/api/v0/product/${data}.json`)
             .then((response) => response.json())
@@ -130,16 +132,31 @@ export default class ScannerView extends React.Component {
                         flex: 1,
                         flexDirection: 'column',
                         justifyContent: 'flex-end'
-                    }} 
-                
-                />
-                <Button title={'Flash'} onPress={()=> this.changeFlash()} />
-                <Button title={'Recommencer'} onPress={()=> this.setState({scanned: null})} />
-                    
-              
+                    }}
+
+                >
+                    <View style={{ flex: 1, flexDirection:"row",  position: 'absolute', bottom:0, left:50}}>
+                    <Button style={styles.Button} title={' Flash '}  icon={ <Entypo name="flashlight" size={24} color="white" /> }  onPress={()=> this.changeFlash()}/>
+                    <Button style={styles.Button} title={' Recommencer '} icon={ <Ionicons name="md-refresh" size={24} color="white" /> }  color="#f194ff" onPress={()=> this.setState({scanned: null})} />
+                    </View>
+              </Camera>
             </View>
           );
         }
         return null;
     }
 }
+
+
+const styles = StyleSheet.create({
+
+     Button: {
+
+       borderColor: 'white',
+       borderWidth: 5,
+       borderRadius:10,
+       color:"#f194ff",
+
+     },
+
+});
